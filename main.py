@@ -1,23 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import sys
-import subprocess
-
-# automatyczna instalacja bibliotek (jeśli brakuje)
-def ensure_packages_installed(packages):
-    for pkg in packages:
-        try:
-            __import__(pkg)
-        except ImportError:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", pkg])
-
-ensure_packages_installed(["numpy", "matplotlib"])
 
 # definicja wszystkich scenariuszy modelu w słowniku
 BIO_SCENARIOS = {
     "A": {"params": {"p1": 8.8, "p2": 440, "p3": 100, "d1": 1.375e-14, "d2": 1.375e-4, "d3": 3e-5, "k1": 1.925e-4, "k2": 1e5, "k3": 1.5e5},
            "conditions": {"dna_damage": False, "siRNA": False, "pten_active": True},
-           "initial": [30, 50, 50, 80]},
+           "initial": [26800, 154200, 11080, 15900]},
     "B": {"params": {"p1": 8.8, "p2": 440, "p3": 100, "d1": 1.375e-14, "d2": 1.375e-4, "d3": 3e-5, "k1": 1.925e-4, "k2": 1e5, "k3": 1.5e5},
            "conditions": {"dna_damage": True, "siRNA": False, "pten_active": True},
            "initial": [26800, 154200, 11080, 15900]},
@@ -91,7 +79,7 @@ def generate_plot(time, data, title):
 
 # główna funkcja
 def run_all():
-    time_minutes = np.arange(0, 2880, 0.5)
+    time_minutes = np.arange(0, 2880, 0.5)  # 0.1 min = 6 sekund
     for scenario, config in BIO_SCENARIOS.items():
         y_initial = config["initial"]
         params = config["params"]
