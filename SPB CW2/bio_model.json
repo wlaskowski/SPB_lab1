@@ -1,0 +1,84 @@
+{
+  "species": ["p53", "MDM2_nuc", "MDM2_cyt", "PTEN"],
+  "initial_state": {
+  "p53": 215100,
+  "MDM2_nuc": 989800,
+  "MDM2_cyt": 2386500,
+  "PTEN": 680700
+},
+  "params": {
+    "p1": 8.8,
+    "p2": 440,
+    "p3": 100,
+    "d1": 1.375e-14,
+    "d2": 0.0001375,
+    "d3": 0.00003,
+    "k1": 0.0001925,
+    "k2": 100000,
+    "k3": 150000
+  },
+  "reactions": [
+    {
+      "reactants": {},
+      "products": { "p53": 1 },
+      "rate": "p1"
+    },
+    {
+      "reactants": { "p53": 1, "MDM2_nuc": 1 },
+      "products": {},
+      "rate": "d1 * p53 * MDM2_nuc"
+    },
+    {
+      "reactants": { "p53": 1 },
+      "products": { "p53": 1, "MDM2_cyt": 1 },
+      "rate": "p2 * p53 / (p53 + k2)"
+    },
+    {
+      "reactants": { "MDM2_cyt": 1 },
+      "products": { "MDM2_nuc": 1 },
+      "rate": "k1 * MDM2_cyt * (k3 / (k3 + PTEN))"
+    },
+    {
+      "reactants": { "MDM2_cyt": 1 },
+      "products": {},
+      "rate": "d2 * MDM2_cyt"
+    },
+    {
+      "reactants": { "MDM2_nuc": 1 },
+      "products": {},
+      "rate": "d2 * MDM2_nuc"
+    },
+    {
+      "reactants": { "p53": 1 },
+      "products": { "p53": 1, "PTEN": 1 },
+      "rate": "p3 * p53 / (p53 + k2)"
+    },
+    {
+      "reactants": { "PTEN": 1 },
+      "products": {},
+      "rate": "d3 * PTEN"
+    }
+  ],
+  "scenarios": {
+    "A": {
+      "dna_damage": false,
+      "siRNA": false,
+      "pten_active": true
+    },
+    "B": {
+      "dna_damage": true,
+      "siRNA": false,
+      "pten_active": true
+    },
+    "C": {
+      "dna_damage": true,
+      "siRNA": false,
+      "pten_active": false
+    },
+    "D": {
+      "dna_damage": true,
+      "siRNA": true,
+      "pten_active": false
+    }
+  }
+}
